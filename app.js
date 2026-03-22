@@ -27,11 +27,14 @@ function obtenerVersiculoDelDia() {
 
 const data = obtenerVersiculoDelDia();
 
-document.getElementById("versiculo").innerText =
-  data.texto + " - " + data.referencia;
+document.getElementById("faithVerseText").innerText =
+  data.texto;
 
-document.getElementById("reflexion").innerText =
+document.getElementById("faithVerseReference").innerText =
+  data.referencia;
+
+document.getElementById("faithReflection").innerText =
   data.reflexion;
 
-document.getElementById("mensaje").innerText =
+document.getElementById("faithMotivation").innerText =
   data.mensaje;
