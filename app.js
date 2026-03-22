@@ -29,8 +29,7 @@ const versiculos = [
 ];
 
 function obtenerVersiculoDelDia() {
-  const hoy = new Date();
-  const index = hoy.getDate() % versiculos.length;
+  const index = today.getDate() % versiculos.length;
   return versiculos[index];
 }
 
@@ -40,49 +39,38 @@ function showScreen(screenName) {
   });
 
   const target = document.getElementById(`screen-${screenName}`);
-  if (target) target.classList.add("active");
+  if (target) {
+    target.classList.add("active");
+  }
 
   navButtons.forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.screen === screenName);
+    btn.classList.remove("active");
+    if (btn.dataset.screen === screenName) {
+      btn.classList.add("active");
+    }
   });
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-navButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    showScreen(btn.dataset.screen);
-  });
-});
-
-quickCards.forEach((card) => {
-  card.addEventListener("click", () => {
-    showScreen(card.dataset.target);
-  });
-});
-
 function setDailyContent() {
   const data = obtenerVersiculoDelDia();
 
-  const dailyVerseText = document.getElementById("dailyVerseText");
-  const dailyVerseReference = document.getElementById("dailyVerseReference");
-  const dailyReflection = document.getElementById("dailyReflection");
-  const dailyMotivation = document.getElementById("dailyMotivation");
+  const ids = {
+    dailyVerseText: data.texto,
+    dailyVerseReference: data.referencia,
+    dailyReflection: data.reflexion,
+    dailyMotivation: data.mensaje,
+    faithVerseText: data.texto,
+    faithVerseReference: data.referencia,
+    faithReflection: data.reflexion,
+    faithMotivation: data.mensaje
+  };
 
-  const faithVerseText = document.getElementById("faithVerseText");
-  const faithVerseReference = document.getElementById("faithVerseReference");
-  const faithReflection = document.getElementById("faithReflection");
-  const faithMotivation = document.getElementById("faithMotivation");
-
-  if (dailyVerseText) dailyVerseText.textContent = `"${data.texto}"`;
-  if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
-  if (dailyReflection) dailyReflection.textContent = data.reflexion;
-  if (dailyMotivation) dailyMotivation.textContent = data.mensaje;
-
-  if (faithVerseText) faithVerseText.textContent = `"${data.texto}"`;
-  if (faithVerseReference) faithVerseReference.textContent = data.referencia;
-  if (faithReflection) faithReflection.textContent = data.reflexion;
-  if (faithMotivation) faithMotivation.textContent = data.mensaje;
+  Object.entries(ids).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  });
 }
 
 function saveTracker() {
@@ -176,6 +164,18 @@ function updateProgress() {
   if (devotionalStat) devotionalStat.textContent = devotionalDays;
 }
 
+navButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    showScreen(btn.dataset.screen);
+  });
+});
+
+quickCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    showScreen(card.dataset.target);
+  });
+});
+
 trackerChecks.forEach((check) => {
   check.addEventListener("change", saveTracker);
 });
@@ -187,4 +187,4 @@ if (notesField) {
 setDailyContent();
 loadTracker();
 updateProgress();
-
+showScreen("home");
