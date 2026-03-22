@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Plan Fitness Julianna</title>
+<style>
+  :root {
+    --bg: #f7f3fb;
+    --card: #ffffff;
+    --lav: #c9a7eb;
+    --lav2: #e9daf9;
+    --rose: #f4d9e7;
+    --text: #3d3150;
+    --muted: #7d6a92;
+    --shadow: 0 10px 25px rgba(87, 60, 120, .10);
+    --radius: 18px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:linear-gradient(180deg, #fbf8fe 0%, #f4eefb 100%); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  body { max-width: 480px; margin: 0 auto; min-height: 100vh; }
+  .app { padding-bottom: 88px; }
+  .hero {
+    padding: 22px 18px 14px;
+    background: linear-gradient(135deg, #d6b9f3 0%, #f3d9e8 100%);
+    border-bottom-left-radius: 28px;
+    border-bottom-right-radius: 28px;
+    box-shadow: var(--shadow);
+  }
+  .hero h1 { margin:0; font-size: 1.55rem; }
+  .hero p { margin:8px 0 0; color:#5b4a6e; line-height:1.35; }
+  .badge {
+    display:inline-block; margin-top:12px; background:rgba(255,255,255,.75); color:#5b4a6e;
+    padding:8px 12px; border-radius:999px; font-size:.9rem; font-weight:600;
+  }
+  .container { padding: 16px; }
+  .tabbar {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 10px; width: min(460px, calc(100% - 16px));
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:8px;
+    background: rgba(255,255,255,.92); backdrop-filter: blur(10px);
+    border:1px solid rgba(130, 90, 170, .08);
+    border-radius: 22px; padding:8px; box-shadow: var(--shadow);
+  }
+  .tabbar button {
+    border:none; background:transparent; color:var(--muted); padding:10px 4px; border-radius:14px;
+    font-size:.78rem; font-weight:700;
+  }
+  .tabbar button.active { background:linear-gradient(135deg, var(--lav2), #fff); color:#533c70; }
+  .screen { display:none; }
+  .screen.active { display:block; }
+  .card {
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:16px; margin-bottom:14px;
+  }
+  .card h2, .card h3 { margin:0 0 10px; }
+  .sub { color:var(--muted); font-size:.93rem; line-height:1.45; }
+  .progress-wrap { margin-top:12px; }
+  .progress {
+    width:100%; height:12px; background:#efe6f8; border-radius:999px; overflow:hidden;
+  }
+  .progress > div {
+    width:0%; height:100%; background:linear-gradient(90deg, #bf96e8, #f0b9d1); border-radius:999px;
+    transition: width .25s ease;
+  }
+  .stats { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; margin-top:12px; }
+  .pill {
+    background:linear-gradient(135deg, #faf5ff, #fff); padding:12px; border-radius:16px; text-align:center;
+    border:1px solid #f0e7fb;
+  }
+  .pill .num { font-size:1.15rem; font-weight:800; }
+  .pill .label { font-size:.78rem; color:var(--muted); margin-top:4px; }
+  .day-card {
+    background:linear-gradient(180deg, #fff 0%, #fcf9ff 100%);
+    border:1px solid #f1e8fb; border-radius:18px; padding:14px; margin-bottom:12px;
+  }
+  .day-title { font-weight:800; margin-bottom:10px; }
+  label {
+    display:flex; align-items:flex-start; gap:10px; margin:8px 0; font-size:.95rem;
+  }
+  input[type=checkbox] {
+    width:20px; height:20px; accent-color:#b685e7; margin-top:1px;
+  }
+  textarea {
+    width:100%; min-height:70px; border-radius:14px; border:1px solid #eadcf8; padding:12px;
+    margin-top:10px; font:inherit; color:var(--text); background:#fff;
+  }
+  .routine-grid { display:grid; gap:12px; }
+  .exercise {
+    border:1px solid #f0e7fb; border-radius:16px; padding:14px; background:#fff;
+  }
+  .exercise .name { font-weight:800; margin-bottom:6px; }
+  .meta { color:var(--muted); font-size:.9rem; margin-bottom:6px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  .chip {
+    background:#f7efff; color:#654c85; border-radius:999px; padding:7px 10px; font-size:.82rem; font-weight:700;
+  }
+  .menu-day {
+    border:1px solid #f0e7fb; border-radius:16px; padding:14px; margin-bottom:12px; background:#fff;
+  }
+  .menu-day h3 { margin:0 0 10px; }
+  .meal { margin:8px 0; }
+  .meal b { display:block; margin-bottom:3px; }
+  .tip {
+    background:linear-gradient(135deg, #fff2f8, #fbf7ff); border:1px solid #f2dfeb; border-radius:16px;
+    padding:13px; margin-bottom:12px;
+  }
+  .small { font-size:.86rem; color:var(--muted); }
+  .weights-table {
+    width:100%; border-collapse:collapse; font-size:.92rem; overflow:hidden; border-radius:14px;
+  }
+  .weights-table th, .weights-table td {
+    border-bottom:1px solid #f1e8fb; padding:10px 8px; text-align:left;
+  }
+  .weights-table th { color:#5c467a; background:#faf6fe; }
+  .accordion { cursor:pointer; user-select:none; }
+  .accordion + .acc-body { display:none; }
+  .accordion.open + .acc-body { display:block; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <h1>💜 Full Cambio — Semana 1</h1>
+    <p>Tracker + menú + rutina de gimnasio. Hecho para usarlo desde tu teléfono y empezar el <b>lunes 23 de marzo</b>.</p>
+    <div class="badge">Julianna · 130 lb · objetivo: tonificar + glúteos + menos dolor</div>
+  </div>
+
+  <div class="container">
+    <section id="screen-home" class="screen active">
+      <div class="card">
+        <h2>Tu plan de esta semana</h2>
+        <div class="sub">Meta simple: 4 días de gym, proteína en cada comida, agua y evitar sentarte hundida mucho tiempo.</div>
+        <div class="progress-wrap">
+          <div class="small">Progreso semanal</div>
+          <div class="progress"><div id="mainProgress"></div></div>
+        </div>
+        <div class="stats">
+          <div class="pill"><div class="num" id="gymCount">0</div><div class="label">Días gym</div></div>
+          <div class="pill"><div class="num" id="checksCount">0</div><div class="label">Checks</div></div>
+          <div class="pill"><div class="num" id="waterCount">0</div><div class="label">Días con agua</div></div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <b>Rutina base:</b> Lunes glúteos/piernas · Martes brazos/abdomen · Miércoles activo suave · Jueves glúteos/piernas · Viernes brazos/abdomen.
+      </div>
+
+      <div class="card">
+        <h3>Pesos recomendados para empezar</h3>
+        <div class="sub">La regla: elige un peso con el que puedas hacer 10–12 repeticiones con buena forma, sintiendo esfuerzo en las últimas 2–3.</div>
+        <table class="weights-table">
+          <tr><th>Ejercicio</th><th>Peso inicial sugerido</th></tr>
+          <tr><td>Hip thrust</td><td>40–70 lb</td></tr>
+          <tr><td>Prensa</td><td>70–120 lb</td></tr>
+          <tr><td>Abducción</td><td>40–70 lb</td></tr>
+          <tr><td>Kickback</td><td>10–20 lb por pierna</td></tr>
+          <tr><td>Peso muerto rumano</td><td>10–20 lb por mancuerna</td></tr>
+          <tr><td>Curl bíceps</td><td>8–12 lb por mancuerna</td></tr>
+          <tr><td>Tríceps en polea</td><td>15–30 lb</td></tr>
+          <tr><td>Elevaciones laterales</td><td>5–10 lb por mancuerna</td></tr>
+          <tr><td>Crunch máquina</td><td>20–40 lb</td></tr>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Regla para subir peso</h3>
+        <div class="sub">Si completas todas las series con buena forma y todavía sientes que podrías hacer 2–3 repeticiones más, la próxima vez sube un poquito: 5 lb en máquinas grandes o 2.5–5 lb por mancuerna.</div>
+      </div>
+    </section>
+
+    <section id="screen-tracker" class="screen">
+      <div class="card">
+        <h2>Tracker semanal</h2>
+        <div class="sub">Todo se guarda solo en tu teléfono mientras uses este archivo en el mismo navegador.</div>
+      </div>
+      
+    <div class="day-card">
+      <div class="day-title">Lunes 03/23</div>
+      <label><input type="checkbox" data-key="w1_d0_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d0_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d0_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d0_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d0_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d0_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d0_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-title">Martes 03/24</div>
+      <label><input type="checkbox" data-key="w1_d1_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d1_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d1_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d1_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d1_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d1_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d1_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-title">Miércoles 03/25</div>
+      <label><input type="checkbox" data-key="w1_d2_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d2_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d2_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d2_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d2_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d2_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d2_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-title">Jueves 03/26</div>
+      <label><input type="checkbox" data-key="w1_d3_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d3_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d3_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d3_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d3_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d3_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d3_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-title">Viernes 03/27</div>
+      <label><input type="checkbox" data-key="w1_d4_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d4_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d4_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d4_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d4_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d4_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d4_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-title">Sábado 03/28</div>
+      <label><input type="checkbox" data-key="w1_d5_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d5_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d5_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d5_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d5_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d5_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d5_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    <div class="day-card">
+      <div class="day-title">Domingo 03/29</div>
+      <label><input type="checkbox" data-key="w1_d6_gym"> Fui al gym</label>
+      <label><input type="checkbox" data-key="w1_d6_protein"> Comí proteína en mis comidas</label>
+      <label><input type="checkbox" data-key="w1_d6_water"> Tomé suficiente agua</label>
+      <label><input type="checkbox" data-key="w1_d6_movement"> Hice movimiento/caminata</label>
+      <label><input type="checkbox" data-key="w1_d6_sofa"> Evité hundirme en sofá/cama</label>
+      <label><input type="checkbox" data-key="w1_d6_stretch"> Hice estiramiento</label>
+      <textarea data-key="w1_d6_notes" placeholder="Notas del día..."></textarea>
+    </div>
+    
+    </section>
+
+    <section id="screen-menu" class="screen">
+      <div class="card">
+        <h2>Menú semana 1</h2>
+        <div class="sub">Enfoque: proteína 80–100 g al día, comidas sencillas y realistas.</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Lunes</h3>
+        <div class="meal"><b>Desayuno</b>2 huevos + 2 claras, 1 tostada integral, fruta</div>
+        <div class="meal"><b>Snack</b>Yogurt griego</div>
+        <div class="meal"><b>Almuerzo</b>Pollo a la plancha + arroz + ensalada</div>
+        <div class="meal"><b>Snack</b>Queso o nueces</div>
+        <div class="meal"><b>Cena</b>Atún con aguacate y vegetales</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Martes</h3>
+        <div class="meal"><b>Desayuno</b>Yogurt griego + fruta + un poco de granola</div>
+        <div class="meal"><b>Snack</b>Manzana con queso</div>
+        <div class="meal"><b>Almuerzo</b>Carne magra + tortillas o arroz + vegetales</div>
+        <div class="meal"><b>Snack</b>Huevos cocidos</div>
+        <div class="meal"><b>Cena</b>Pollo + ensalada</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Miércoles</h3>
+        <div class="meal"><b>Desayuno</b>Huevos revueltos + tostada</div>
+        <div class="meal"><b>Snack</b>Yogurt o cottage cheese</div>
+        <div class="meal"><b>Almuerzo</b>Atún con arroz y pepino/tomate</div>
+        <div class="meal"><b>Snack</b>Fruta + nueces</div>
+        <div class="meal"><b>Cena</b>Pollo con verduras salteadas</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Jueves</h3>
+        <div class="meal"><b>Desayuno</b>Omelette de huevo con queso ligero</div>
+        <div class="meal"><b>Snack</b>Yogurt griego</div>
+        <div class="meal"><b>Almuerzo</b>Pollo + papa o arroz + ensalada</div>
+        <div class="meal"><b>Snack</b>Queso + fruta</div>
+        <div class="meal"><b>Cena</b>Atún o pescado + vegetales</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Viernes</h3>
+        <div class="meal"><b>Desayuno</b>Huevos + avena o tostada</div>
+        <div class="meal"><b>Snack</b>Batido de proteína o yogurt</div>
+        <div class="meal"><b>Almuerzo</b>Carne magra + arroz + vegetales</div>
+        <div class="meal"><b>Snack</b>Nueces</div>
+        <div class="meal"><b>Cena</b>Pollo + ensalada + aguacate</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Sábado</h3>
+        <div class="meal"><b>Desayuno</b>Yogurt + fruta</div>
+        <div class="meal"><b>Snack</b>Queso</div>
+        <div class="meal"><b>Almuerzo</b>Pollo o carne + arroz</div>
+        <div class="meal"><b>Snack</b>Fruta</div>
+        <div class="meal"><b>Cena</b>Huevos con vegetales</div>
+      </div>
+
+      <div class="menu-day">
+        <h3>Domingo</h3>
+        <div class="meal"><b>Desayuno</b>Huevos + pan integral</div>
+        <div class="meal"><b>Snack</b>Yogurt griego</div>
+        <div class="meal"><b>Almuerzo</b>Pollo + ensalada + arroz</div>
+        <div class="meal"><b>Snack</b>Nueces o queso</div>
+        <div class="meal"><b>Cena</b>Atún con aguacate</div>
+      </div>
+
+      <div class="tip">
+        <b>Agua:</b> 2 botellas grandes al día mínimo. <br>
+        <b>Proteína:</b> trata de incluirla en cada comida.
+      </div>
+    </section>
+
+    <section id="screen-routine" class="screen">
+      <div class="card">
+        <h2>Rutina de ejercicios</h2>
+        <div class="sub">Pensada para gimnasio, glúteos más rápidos y menos dolor. Antes de pierna: 5 minutos de caminadora + 1 serie de 12 puentes de glúteo.</div>
+      </div>
+
+      <div class="card">
+        <h3 class="accordion open" onclick="toggleAcc(this)">🍑 Lunes / Jueves · Glúteos + Piernas</h3>
+        <div class="acc-body" style="display:block">
+          <div class="routine-grid">
+            <div class="exercise">
+              <div class="name">Hip Thrust</div>
+              <div class="meta">4 series · 10–12 reps · 40–70 lb</div>
+              <div>Aprieta arriba por 2 segundos. Debes sentirlo en glúteos, no en espalda.</div>
+              <div class="chips"><span class="chip">Máquina o banco</span><span class="chip">Ejercicio principal</span></div>
+            </div>
+            <div class="exercise">
+              <div class="name">Prensa de piernas</div>
+              <div class="meta">3 series · 12 reps · 70–120 lb</div>
+              <div>Pon los pies un poco más arriba para dar más trabajo al glúteo.</div>
+              <div class="chips"><span class="chip">Baja controlado</span></div>
+            </div>
+            <div class="exercise">
+              <div class="name">Abducción</div>
+              <div class="meta">3 series · 15 reps · 40–70 lb</div>
+              <div>Abre y controla el regreso. Vas a sentir quemazón al lado del glúteo.</div>
+              <div class="chips"><span class="chip">Glúteo medio</span></div>
+            </div>
+            <div class="exercise">
+              <div class="name">Kickback</div>
+              <div class="meta">3 series · 12 reps por pierna · 10–20 lb</div>
+              <div>No arquees la espalda. Movimiento lento y limpio.</div>
+              <div class="chips"><span class="chip">Máquina o polea</span></div>
+            </div>
+            <div class="exercise">
+              <div class="name">Peso muerto rumano</div>
+              <div class="meta">3 series · 10 reps · 10–20 lb por mancuerna</div>
+              <div>Espalda recta, baja lento y siente el estiramiento atrás.</div>
+              <div class="chips"><span class="chip">Técnica primero</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="accordion open" onclick="toggleAcc(this)">💪 Martes / Viernes · Brazos + Abdomen</h3>
+        <div class="acc-body" style="display:block">
+          <div class="routine-grid">
+            <div class="exercise">
+              <div class="name">Curl de bíceps</div>
+              <div class="meta">3 series · 12 reps · 8–12 lb</div>
+              <div>Codos pegados al cuerpo. Sube controlado.</div>
+            </div>
+            <div class="exercise">
+              <div class="name">Tríceps en polea</div>
+              <div class="meta">3 series · 12 reps · 15–30 lb</div>
+              <div>Aprieta abajo sin mover hombros.</div>
+            </div>
+            <div class="exercise">
+              <div class="name">Elevaciones laterales</div>
+              <div class="meta">3 series · 10 reps · 5–10 lb</div>
+              <div>Mancuernas ligeras. Mejor forma que peso.</div>
+            </div>
+            <div class="exercise">
+              <div class="name">Plancha</div>
+              <div class="meta">3 veces · 20–30 seg</div>
+              <div>Cuerpo recto, abdomen apretado.</div>
+            </div>
+            <div class="exercise">
+              <div class="name">Crunch en máquina o piso</div>
+              <div class="meta">3 series · 15 reps · 20–40 lb si es máquina</div>
+              <div>Sube con abdomen, no con cuello.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <b>Cardio:</b> después de entrenar haz 10–15 minutos de caminadora inclinada o escaladora.
+      </div>
+
+      <div class="tip">
+        <b>Por tu dolor:</b> evita sentarte hundida en sofá o cama mucho tiempo. Si una máquina te molesta justo ahí, baja el peso o cambia de posición.
+      </div>
+    </section>
+  </div>
+</div>
+
+<nav class="tabbar">
+  <button class="active" onclick="showScreen('home', this)">Inicio</button>
+  <button onclick="showScreen('tracker', this)">Tracker</button>
+  <button onclick="showScreen('menu', this)">Menú</button>
+  <button onclick="showScreen('routine', this)">Rutina</button>
+</nav>
+
+<script>
+  function showScreen(name, btn) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    document.querySelectorAll('.tabbar button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function toggleAcc(el) {
+    el.classList.toggle('open');
+    const body = el.nextElementSibling;
+    body.style.display = body.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function loadValues() {
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.getAttribute('data-key');
+      const saved = localStorage.getItem(key);
+      if (el.type === 'checkbox') el.checked = saved === '1';
+      else el.value = saved || '';
+      el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', () => saveValue(el));
+    });
+    updateStats();
+  }
+
+  function saveValue(el) {
+    const key = el.getAttribute('data-key');
+    if (el.type === 'checkbox') localStorage.setItem(key, el.checked ? '1' : '0');
+    else localStorage.setItem(key, el.value);
+    updateStats();
+  }
+
+  function updateStats() {
+    const checks = [...document.querySelectorAll('input[type=checkbox][data-key]')];
+    const total = checks.length;
+    const checked = checks.filter(c => c.checked).length;
+    const gym = checks.filter(c => c.dataset.key.endsWith('_gym') && c.checked).length;
+    const water = checks.filter(c => c.dataset.key.endsWith('_water') && c.checked).length;
+    const pct = total ? Math.round((checked / total) * 100) : 0;
+    document.getElementById('mainProgress').style.width = pct + '%';
+    document.getElementById('gymCount').textContent = gym;
+    document.getElementById('checksCount').textContent = checked;
+    document.getElementById('waterCount').textContent = water;
+  }
+
+  loadValues();
+</script>
+</body>
+</html>
