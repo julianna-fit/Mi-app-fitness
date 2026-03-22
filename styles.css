@@ -248,3 +248,18 @@ ul {
 li {
   margin-bottom: 8px;
 }
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+}
+
+.nav-btn span {
+  font-size: 0.7rem;
+}
+
+.nav-btn.active {
+  transform: scale(1.05);
+}
