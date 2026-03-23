@@ -47,18 +47,18 @@ quickCards.forEach((card) => {
   });
 });
 
-function setDailyContent() 
-const data = obtenerVersiculoDelDia();
-  if (!data) return
+function setDailyContent() {
+  const data = obtenerVersiculoDelDia();
+  if (!data) return;
 
-  // INICIO
+  // Inicio
   const dailyVerseText = document.getElementById("dailyVerseText");
   const dailyVerseReference = document.getElementById("dailyVerseReference");
 
   if (dailyVerseText) dailyVerseText.textContent = data.texto;
   if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
 
-  // FE 🔥
+  // Fe
   const faithVerseText = document.getElementById("faithVerseText");
   const faithVerseReference = document.getElementById("faithVerseReference");
   const faithReflection = document.getElementById("faithReflection");
@@ -68,20 +68,6 @@ const data = obtenerVersiculoDelDia();
   if (faithVerseReference) faithVerseReference.textContent = data.referencia;
   if (faithReflection) faithReflection.textContent = data.reflexion;
   if (faithMotivation) faithMotivation.textContent = data.mensaje;
-}
-  const data = obtenerVersiculoDelDia();
-
-  // 🔒 protección para evitar errores
-  if (!data) {
-    console.log("No se encontró versículo");
-    return;
-  }
-
-  const dailyVerseText = document.getElementById("dailyVerseText");
-  const dailyVerseReference = document.getElementById("dailyVerseReference");
-
-  if (dailyVerseText) dailyVerseText.textContent = data.texto;
-  if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
 }
 
 function saveTracker() {
