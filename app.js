@@ -7,7 +7,7 @@ const notesField = document.getElementById("dailyNotes");
 const today = new Date();
 const todayKey = today.toISOString().split("T")[0];
 
-const versiculos = [
+const versiculosDelAno = [
   {
     texto: "pruebaaaaa Todo lo puedo en Aquel que me fortalece.",
     referencia: "Filipenses 4:13",
