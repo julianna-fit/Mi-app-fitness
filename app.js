@@ -8,7 +8,12 @@ const today = new Date();
 const todayKey = today.toISOString().split("T")[0];
 
 function obtenerVersiculoDelDia() {
-  return versiculosDelAno[0];
+  return {
+    texto: "PRUEBAAAAA 🔥",
+    referencia: "Filipenses 4:13",
+    reflexion: "Dios te da la fuerza incluso cuando sientes que no puedes más.",
+    mensaje: "Hoy eres más fuerte de lo que crees 💜"
+  };
 }
 
 function showScreen(screenName) {
@@ -43,9 +48,6 @@ function setDailyContent() {
 
   const dailyVerseText = document.getElementById("dailyVerseText");
   const dailyVerseReference = document.getElementById("dailyVerseReference");
-  const dailyReflection = document.getElementById("dailyReflection");
-  const dailyMotivation = document.getElementById("dailyMotivation");
-
   const faithVerseText = document.getElementById("faithVerseText");
   const faithVerseReference = document.getElementById("faithVerseReference");
   const faithReflection = document.getElementById("faithReflection");
@@ -53,9 +55,6 @@ function setDailyContent() {
 
   if (dailyVerseText) dailyVerseText.textContent = data.texto;
   if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
-  if (dailyReflection) dailyReflection.textContent = data.reflexion;
-  if (dailyMotivation) dailyMotivation.textContent = data.mensaje;
-
   if (faithVerseText) faithVerseText.textContent = data.texto;
   if (faithVerseReference) faithVerseReference.textContent = data.referencia;
   if (faithReflection) faithReflection.textContent = data.reflexion;
@@ -64,14 +63,11 @@ function setDailyContent() {
 
 function saveTracker() {
   const data = {};
-
   trackerChecks.forEach((check) => {
     data[check.dataset.key] = check.checked;
   });
 
-  if (notesField) {
-    data.notes = notesField.value;
-  }
+  if (notesField) data.notes = notesField.value;
 
   localStorage.setItem(`tracker-${todayKey}`, JSON.stringify(data));
   updateProgress();
@@ -87,9 +83,7 @@ function loadTracker() {
     check.checked = !!data[check.dataset.key];
   });
 
-  if (notesField) {
-    notesField.value = data.notes || "";
-  }
+  if (notesField) notesField.value = data.notes || "";
 }
 
 function getWeekDates() {
