@@ -1,6 +1,6 @@
 const versiculosDelAno = [
   {
-    texto: "pruebaaaa", "Todo lo puedo en Aquel que me fortalece.",
+    texto: "Todo lo puedo en Aquel que me fortalece.",
     referencia: "Filipenses 4:13",
     reflexion: "Dios te da la fuerza incluso cuando sientes que no puedes más.",
     mensaje: "Hoy eres más fuerte de lo que crees 💜"
