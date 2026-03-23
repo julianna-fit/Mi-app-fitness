@@ -278,3 +278,10 @@ li {
   color: var(--muted);
   font-size: 0.98rem;
 }
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
