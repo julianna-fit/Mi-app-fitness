@@ -285,3 +285,11 @@ li {
 .screen.active {
   display: block;
 }
+.card ul {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+.card li {
+  margin-bottom: 6px;
+}
