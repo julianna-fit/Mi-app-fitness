@@ -7,7 +7,18 @@ const notesField = document.getElementById("dailyNotes");
 const today = new Date();
 const todayKey = today.toISOString().split("T")[0];
 
+function obtenerNumeroDelDiaDelAno(fecha = new Date()) {
+  const inicio = new Date(fecha.getFullYear(), 0, 0);
+  const diferencia = fecha - inicio;
+  const unDia = 1000 * 60 * 60 * 24;
+  return Math.floor(diferencia / unDia);
+}
+
 function obtenerVersiculoDelDia() {
+  const numeroDia = obtenerNumeroDelDiaDelAno(new Date());
+  const index = (numeroDia - 1) % versiculosDelAno.length;
+  return versiculosDelAno[index];
+}
   return {
     texto: "Todo lo puedo en Cristo que me fortalece 🔥",
     referencia: "Filipenses 4:13",
