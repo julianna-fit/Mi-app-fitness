@@ -7,30 +7,9 @@ const notesField = document.getElementById("dailyNotes");
 const today = new Date();
 const todayKey = today.toISOString().split("T")[0];
 
-const versiculosDelAno = [
-  {
-    texto: "pruebaaaaa Todo lo puedo en Aquel que me fortalece.",
-    referencia: "Filipenses 4:13",
-    reflexion: "Dios te da la fuerza incluso cuando sientes que no puedes más.",
-    mensaje: "Hoy eres más fuerte de lo que crees 💜"
-  },
-  {
-    texto: "Jehová es mi pastor; nada me faltará.",
-    referencia: "Salmos 23:1",
-    reflexion: "Dios cuida cada detalle de tu vida.",
-    mensaje: "Confía, Dios ya tiene el control 🙏"
-  },
-  {
-    texto: "Esfuérzate y sé valiente.",
-    referencia: "Josué 1:9",
-    reflexion: "No estás sola, Dios va contigo.",
-    mensaje: "Hoy camina con valentia 💪
-  ];
-
 function obtenerVersiculoDelDia() {
   return versiculosDelAno[0];
 }
-
 
 function showScreen(screenName) {
   screens.forEach((screen) => {
@@ -38,38 +17,49 @@ function showScreen(screenName) {
   });
 
   const target = document.getElementById(`screen-${screenName}`);
-  if (target) {
-    target.classList.add("active");
-  }
+  if (target) target.classList.add("active");
 
   navButtons.forEach((btn) => {
-    btn.classList.remove("active");
-    if (btn.dataset.screen === screenName) {
-      btn.classList.add("active");
-    }
+    btn.classList.toggle("active", btn.dataset.screen === screenName);
   });
 
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+navButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    showScreen(btn.dataset.screen);
+  });
+});
+
+quickCards.forEach((card) => {
+  card.addEventListener("click", () => {
+    showScreen(card.dataset.target);
+  });
+});
+
 function setDailyContent() {
   const data = obtenerVersiculoDelDia();
 
-  const ids = {
-    dailyVerseText: data.texto,
-    dailyVerseReference: data.referencia,
-    dailyReflection: data.reflexion,
-    dailyMotivation: data.mensaje,
-    faithVerseText: data.texto,
-    faithVerseReference: data.referencia,
-    faithReflection: data.reflexion,
-    faithMotivation: data.mensaje
-  };
+  const dailyVerseText = document.getElementById("dailyVerseText");
+  const dailyVerseReference = document.getElementById("dailyVerseReference");
+  const dailyReflection = document.getElementById("dailyReflection");
+  const dailyMotivation = document.getElementById("dailyMotivation");
 
-  Object.entries(ids).forEach(([id, value]) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value;
-  });
+  const faithVerseText = document.getElementById("faithVerseText");
+  const faithVerseReference = document.getElementById("faithVerseReference");
+  const faithReflection = document.getElementById("faithReflection");
+  const faithMotivation = document.getElementById("faithMotivation");
+
+  if (dailyVerseText) dailyVerseText.textContent = data.texto;
+  if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
+  if (dailyReflection) dailyReflection.textContent = data.reflexion;
+  if (dailyMotivation) dailyMotivation.textContent = data.mensaje;
+
+  if (faithVerseText) faithVerseText.textContent = data.texto;
+  if (faithVerseReference) faithVerseReference.textContent = data.referencia;
+  if (faithReflection) faithReflection.textContent = data.reflexion;
+  if (faithMotivation) faithMotivation.textContent = data.mensaje;
 }
 
 function saveTracker() {
@@ -162,18 +152,6 @@ function updateProgress() {
   if (waterStat) waterStat.textContent = waterDays;
   if (devotionalStat) devotionalStat.textContent = devotionalDays;
 }
-
-navButtons.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    showScreen(btn.dataset.screen);
-  });
-});
-
-quickCards.forEach((card) => {
-  card.addEventListener("click", () => {
-    showScreen(card.dataset.target);
-  });
-});
 
 trackerChecks.forEach((check) => {
   check.addEventListener("change", saveTracker);
