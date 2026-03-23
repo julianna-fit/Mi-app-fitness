@@ -50,21 +50,17 @@ quickCards.forEach((card) => {
 function setDailyContent() {
   const data = obtenerVersiculoDelDia();
 
+  // 🔒 protección para evitar errores
+  if (!data) {
+    console.log("No se encontró versículo");
+    return;
+  }
+
   const dailyVerseText = document.getElementById("dailyVerseText");
   const dailyVerseReference = document.getElementById("dailyVerseReference");
 
-  const faithVerseText = document.getElementById("faithVerseText");
-  const faithVerseReference = document.getElementById("faithVerseReference");
-  const faithReflection = document.getElementById("faithReflection");
-  const faithMotivation = document.getElementById("faithMotivation");
-
   if (dailyVerseText) dailyVerseText.textContent = data.texto;
   if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
-
-  if (faithVerseText) faithVerseText.textContent = data.texto;
-  if (faithVerseReference) faithVerseReference.textContent = data.referencia;
-  if (faithReflection) faithReflection.textContent = data.reflexion;
-  if (faithMotivation) faithMotivation.textContent = data.mensaje;
 }
 
 function saveTracker() {
