@@ -24,14 +24,13 @@ const versiculos = [
     texto: "Esfuérzate y sé valiente.",
     referencia: "Josué 1:9",
     reflexion: "No estás sola, Dios va contigo.",
-    mensaje: "Hoy camina con valentía 💪"
-  }
-];
+    mensaje: "Hoy camina con valentia 💪
+  ];
 
 function obtenerVersiculoDelDia() {
-  const index = today.getDate() % versiculos.length;
-  return versiculos[index];
+  return versiculosDelAno[0];
 }
+
 
 function showScreen(screenName) {
   screens.forEach((screen) => {
