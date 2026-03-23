@@ -9,7 +9,7 @@ const todayKey = today.toISOString().split("T")[0];
 
 function obtenerVersiculoDelDia() {
   return {
-    texto: "Todo lo puedo en Aquel que me fortalece 🔥",
+    texto: "Todo lo puedo en Cristo que me fortalece 🔥",
     referencia: "Filipenses 4:13",
     reflexion: "Dios te da la fuerza incluso cuando sientes que no puedes más.",
     mensaje: "Hoy eres más fuerte de lo que crees 💜"
