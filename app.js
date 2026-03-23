@@ -168,7 +168,7 @@ trackerChecks.forEach((check) => {
 if (notesField) {
   notesField.addEventListener("input", saveTracker);
 }
-
+console.log("APP JS CARGÓ");
 setDailyContent();
 loadTracker();
 updateProgress();
