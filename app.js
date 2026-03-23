@@ -17,12 +17,7 @@ function obtenerNumeroDelDiaDelAno(fecha = new Date()) {
 function obtenerVersiculoDelDia() {
   const numeroDia = obtenerNumeroDelDiaDelAno(new Date());
   const index = (numeroDia - 1) % versiculosDelAno.length;
-  return versiculosDelAno[index];
-}
-  function obtenerVersiculoDelDia() {
-  const numeroDia = obtenerNumeroDelDiaDelAno(new Date());
-  const index = (numeroDia - 1) % versiculosDelAno.length;
-  return versiculosDelAno[index];
+  return versiculosDelAno[index] || versiculosDelAno[0];
 }
 
 function showScreen(screenName) {
@@ -57,6 +52,7 @@ function setDailyContent() {
 
   const dailyVerseText = document.getElementById("dailyVerseText");
   const dailyVerseReference = document.getElementById("dailyVerseReference");
+
   const faithVerseText = document.getElementById("faithVerseText");
   const faithVerseReference = document.getElementById("faithVerseReference");
   const faithReflection = document.getElementById("faithReflection");
@@ -64,6 +60,7 @@ function setDailyContent() {
 
   if (dailyVerseText) dailyVerseText.textContent = data.texto;
   if (dailyVerseReference) dailyVerseReference.textContent = data.referencia;
+
   if (faithVerseText) faithVerseText.textContent = data.texto;
   if (faithVerseReference) faithVerseReference.textContent = data.referencia;
   if (faithReflection) faithReflection.textContent = data.reflexion;
@@ -72,11 +69,14 @@ function setDailyContent() {
 
 function saveTracker() {
   const data = {};
+
   trackerChecks.forEach((check) => {
     data[check.dataset.key] = check.checked;
   });
 
-  if (notesField) data.notes = notesField.value;
+  if (notesField) {
+    data.notes = notesField.value;
+  }
 
   localStorage.setItem(`tracker-${todayKey}`, JSON.stringify(data));
   updateProgress();
@@ -92,7 +92,9 @@ function loadTracker() {
     check.checked = !!data[check.dataset.key];
   });
 
-  if (notesField) notesField.value = data.notes || "";
+  if (notesField) {
+    notesField.value = data.notes || "";
+  }
 }
 
 function getWeekDates() {
