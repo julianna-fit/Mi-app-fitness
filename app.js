@@ -19,12 +19,10 @@ function obtenerVersiculoDelDia() {
   const index = (numeroDia - 1) % versiculosDelAno.length;
   return versiculosDelAno[index];
 }
-  return {
-    texto: "Todo lo puedo en Cristo que me fortalece 🔥",
-    referencia: "Filipenses 4:13",
-    reflexion: "Dios te da la fuerza incluso cuando sientes que no puedes más.",
-    mensaje: "Hoy eres más fuerte de lo que crees 💜"
-  };
+  function obtenerVersiculoDelDia() {
+  const numeroDia = obtenerNumeroDelDiaDelAno(new Date());
+  const index = (numeroDia - 1) % versiculosDelAno.length;
+  return versiculosDelAno[index];
 }
 
 function showScreen(screenName) {
